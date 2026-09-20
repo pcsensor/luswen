@@ -3,6 +3,9 @@ title: 安静软件的五条原则
 description: 好工具不必不停说话，它应该在需要时出现，在完成后退场。
 published: 2026-09-09
 category: 产品
+tags:
+  - 产品设计
+  - 用户体验
 readingTime: 4 分钟阅读
 ---
 

@@ -1,0 +1,17 @@
+---
+import type { Post } from "@/lib/posts";
+import { formatCompactDate, getPostPath } from "@/lib/posts";
+
+interface Props { post: Post }
+const { post } = Astro.props;
+---
+
+<a class="group grid gap-3 border-t rule py-7 md:grid-cols-[8rem_1fr_auto] md:items-start" href={getPostPath(post)}>
+  <time class="font-mono text-xs text-[var(--muted)]" datetime={post.data.published.toISOString()}>{formatCompactDate(post.data.published)}</time>
+  <div>
+    <p class="eyebrow mb-2">{post.data.category}</p>
+    <h2 class="text-2xl font-medium tracking-tight transition-colors group-hover:text-[var(--accent)]">{post.data.title}</h2>
+    <p class="mt-2 leading-7 text-[var(--muted)]">{post.data.description}</p>
+  </div>
+  <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+</a>

@@ -1,0 +1,28 @@
+---
+import type { Post } from "@/lib/posts";
+import { getPostPath } from "@/lib/posts";
+
+interface Props {
+  newer?: Post;
+  older?: Post;
+}
+
+const { newer, older } = Astro.props;
+---
+
+{(newer || older) && (
+  <nav class="shell grid border-y rule md:grid-cols-2" aria-label="文章导航">
+    {older ? (
+      <a class="group border-b rule p-7 md:border-r md:border-b-0 md:p-9" href={getPostPath(older)} rel="prev">
+        <span class="eyebrow">上一篇 / Older</span>
+        <span class="mt-4 block text-xl font-medium transition-colors group-hover:text-[var(--accent)]">{older.data.title}</span>
+      </a>
+    ) : <span class="hidden md:block"></span>}
+    {newer ? (
+      <a class="group p-7 text-right md:p-9" href={getPostPath(newer)} rel="next">
+        <span class="eyebrow">下一篇 / Newer</span>
+        <span class="mt-4 block text-xl font-medium transition-colors group-hover:text-[var(--accent)]">{newer.data.title}</span>
+      </a>
+    ) : <span class="hidden md:block"></span>}
+  </nav>
+)}

@@ -1,37 +1,18 @@
 ---
-import { getCollection, render } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostLayout from "@/layouts/PostLayout.astro";
+import { getAdjacentPosts, getPublishedPosts } from "@/lib/posts";
+import { render } from "astro:content";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts", ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
 }
 
-const { post } = Astro.props;
+const { post, posts } = Astro.props;
 const { Content } = await render(post);
-const published = new Intl.DateTimeFormat("zh-CN", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-}).format(post.data.published);
+const { newer, older } = getAdjacentPosts(posts, post.id);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
-  <article>
-    <header class="shell border-b rule py-14 md:py-22">
-      <a href="/#articles" class="mb-10 inline-flex items-center gap-2 text-sm text-[var(--muted)] transition-colors hover:text-[var(--accent)]">← 返回文章</a>
-      <div class="corner-frame px-5 py-8 md:px-12 md:py-14">
-        <p class="eyebrow mb-6">Entry / {post.data.category}</p>
-        <h1 class="max-w-5xl text-[clamp(2.8rem,6.1vw,5.6rem)] font-medium leading-[.96] tracking-[-.05em] [text-wrap:balance]">{post.data.title}</h1>
-        <p class="mt-8 max-w-2xl text-lg leading-8 text-[var(--muted)]">{post.data.description}</p>
-        <div class="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t rule pt-5 font-mono text-xs text-[var(--muted)]">
-          <span>{published}</span>
-          <span>{post.data.readingTime}</span>
-        </div>
-      </div>
-    </header>
-    <div class="article-prose shell py-14 md:py-20">
-      <Content />
-    </div>
-  </article>
-</BaseLayout>
+<PostLayout post={post} newer={newer} older={older}>
+  <Content />
+</PostLayout>

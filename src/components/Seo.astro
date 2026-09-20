@@ -1,0 +1,88 @@
+---
+import { SITE } from "@/config/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  type?: "website" | "article";
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  category?: string;
+  tags?: string[];
+  noindex?: boolean;
+}
+
+const {
+  title = SITE.name,
+  description = SITE.description,
+  canonicalPath = Astro.url.pathname,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  category,
+  tags = [],
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title === SITE.name ? SITE.name : `${title} · ${SITE.name}`;
+const canonicalUrl = Astro.site
+  ? new URL(canonicalPath, Astro.site).toString()
+  : Astro.url.toString();
+const ogImageUrl = Astro.site ? new URL("/og.png", Astro.site).toString() : undefined;
+
+const structuredData = type === "article"
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      description,
+      url: canonicalUrl,
+      datePublished: publishedTime?.toISOString(),
+      dateModified: (modifiedTime ?? publishedTime)?.toISOString(),
+      articleSection: category,
+      keywords: tags,
+      inLanguage: SITE.locale,
+      author: { "@type": "Person", name: SITE.author.name },
+      publisher: { "@type": "Person", name: SITE.author.name },
+    }
+  : {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE.name,
+      description: SITE.description,
+      url: Astro.site?.toString() ?? canonicalUrl,
+      inLanguage: SITE.locale,
+      author: { "@type": "Person", name: SITE.author.name },
+    };
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={SITE.author.name} />
+{!noindex && <link rel="canonical" href={canonicalUrl} />}
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content={SITE.locale.replace("-", "_")} />
+{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+{ogImageUrl && <meta property="og:image:width" content="1200" />}
+{ogImageUrl && <meta property="og:image:height" content="630" />}
+{ogImageUrl && <meta property="og:image:alt" content={`${SITE.name} — ${SITE.author.name}`} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+{ogImageUrl && <meta name="twitter:image:alt" content={`${SITE.name} — ${SITE.author.name}`} />}
+
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+{category && <meta property="article:section" content={category} />}
+{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+{!noindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}

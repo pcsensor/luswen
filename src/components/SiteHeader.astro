@@ -1,0 +1,43 @@
+---
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import { SITE } from "@/config/site";
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) =>
+  href.startsWith("/#") ? currentPath === "/" : currentPath.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b rule bg-[color-mix(in_srgb,var(--page)_88%,transparent)] backdrop-blur-xl">
+  <div class="shell flex h-18 items-center justify-between">
+    <a href="/" class="flex items-center gap-3 font-semibold tracking-tight" aria-label={`${SITE.name} 首页`}>
+      <span class="grid size-7 place-items-center rounded-full border border-[var(--accent)] font-mono text-xs font-bold text-[var(--accent)]">LW</span>
+      <span>{SITE.name} <span class="ml-1 font-mono text-xs font-normal tracking-widest text-[var(--muted)]">/ JUSTIN</span></span>
+    </a>
+
+    <div class="flex items-center gap-5">
+    <nav class="hidden items-center gap-5 text-sm text-[var(--muted)] md:flex" aria-label="主导航">
+      {SITE.navigation.map((item) => (
+        <a
+          class:list={["transition-colors hover:text-[var(--ink)]", isActive(item.href) && "text-[var(--ink)]"]}
+          href={item.href}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="md:hidden">
+      <details class="mobile-menu relative">
+        <summary class="cursor-pointer list-none text-sm text-[var(--muted)]">菜单</summary>
+        <nav class="paper-panel absolute top-10 right-0 grid min-w-32 border rule p-2 shadow-lg" aria-label="移动端导航">
+          {SITE.navigation.map((item) => (
+            <a class="px-3 py-2 text-sm hover:text-[var(--accent)]" href={item.href}>{item.label}</a>
+          ))}
+        </nav>
+      </details>
+    </div>
+    <ThemeToggle />
+    </div>
+  </div>
+</header>

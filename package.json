@@ -1,11 +1,16 @@
 {
-  "name": "astro-field-notes",
+  "name": "luswen",
   "version": "0.1.0",
+  "description": "Justin 的个人博客。",
+  "author": "Justin",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "check:astro": "astro check",
+    "check": "npm run check:architecture && npm run check:astro",
+    "build": "npm run check && astro build",
     "preview": "astro preview"
   },
   "dependencies": {

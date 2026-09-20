@@ -1,0 +1,33 @@
+---
+import PostListItem from "@/components/PostListItem.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPublishedPosts } from "@/lib/posts";
+
+const posts = await getPublishedPosts();
+const years = posts.reduce((groups, post) => {
+  const year = post.data.published.getFullYear();
+  const entries = groups.get(year) ?? [];
+  entries.push(post);
+  groups.set(year, entries);
+  return groups;
+}, new Map<number, typeof posts>());
+---
+
+<BaseLayout title="文章归档" description="luswen 的全部文章，按年份归档。" canonicalPath="/archive/">
+  <section class="shell py-16 md:py-24">
+    <header class="mb-14 border-b rule pb-10">
+      <p class="eyebrow mb-4">Archive / 归档</p>
+      <h1 class="text-[clamp(3rem,7vw,6rem)] font-medium leading-none tracking-[-.055em]">全部文章</h1>
+      <p class="mt-6 text-[var(--muted)]">共 {posts.length} 篇，按发布时间排列。</p>
+    </header>
+
+    {[...years.entries()].map(([year, yearPosts]) => (
+      <section class="mb-14" aria-labelledby={`year-${year}`}>
+        <h2 id={`year-${year}`} class="mb-4 font-mono text-sm tracking-[.15em] text-[var(--accent)]">{year}</h2>
+        <div class="border-b rule">
+          {yearPosts.map((post) => <PostListItem post={post} />)}
+        </div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>

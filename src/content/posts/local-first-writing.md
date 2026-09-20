@@ -3,6 +3,10 @@ title: 把写作重新放回本地
 description: 文件、版本控制与静态构建，为什么仍然是可靠的个人出版工作流。
 published: 2026-08-27
 category: 工程
+tags:
+  - 写作
+  - 静态网站
+  - 工程实践
 readingTime: 5 分钟阅读
 ---
 

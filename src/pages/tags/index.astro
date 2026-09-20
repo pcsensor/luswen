@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { collectTags, getPublishedPosts } from "@/lib/posts";
+
+const tags = collectTags(await getPublishedPosts());
+---
+
+<BaseLayout title="标签" description="按主题浏览 luswen 的文章。" canonicalPath="/tags/">
+  <section class="shell py-16 md:py-24">
+    <header class="mb-14 border-b rule pb-10">
+      <p class="eyebrow mb-4">Topics / 标签</p>
+      <h1 class="text-[clamp(3rem,7vw,6rem)] font-medium leading-none tracking-[-.055em]">主题索引</h1>
+      <p class="mt-6 text-[var(--muted)]">从一个主题开始阅读。</p>
+    </header>
+
+    <div class="grid gap-px border rule bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-3">
+      {tags.map((tag) => (
+        <a class="paper-panel group flex min-h-40 flex-col justify-between p-7 hover:bg-[var(--paper)]" href={tag.href}>
+          <span class="text-2xl font-medium transition-colors group-hover:text-[var(--accent)]">#{tag.name}</span>
+          <span class="font-mono text-xs text-[var(--muted)]">{tag.count} {tag.count === 1 ? "entry" : "entries"}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+import { SITE } from "@/config/site";
+---
+
+<footer class="shell mt-24 border-t rule py-8 text-sm text-[var(--muted)]">
+  <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+    <p>© {new Date().getFullYear()} {SITE.name} · {SITE.author.name}</p>
+    <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="页脚导航">
+      <a class="hover:text-[var(--ink)]" href="/archive/">归档</a>
+      <a class="hover:text-[var(--ink)]" href="/tags/">标签</a>
+      <a class="hover:text-[var(--ink)]" href="/rss.xml">RSS</a>
+      <a class="hover:text-[var(--ink)]" href="/about/">关于</a>
+    </nav>
+  </div>
+</footer>

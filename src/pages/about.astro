@@ -1,0 +1,25 @@
+---
+import { SITE } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="关于" description={`关于 ${SITE.author.name} 与 ${SITE.name}。`} canonicalPath="/about/">
+  <article class="shell py-16 md:py-24">
+    <header class="grid gap-10 border-b rule pb-14 md:grid-cols-[.6fr_1.4fr]">
+      <p class="eyebrow">About / 关于</p>
+      <div>
+        <h1 class="text-[clamp(3rem,7vw,6rem)] font-medium leading-none tracking-[-.055em]">你好，我是<br /><span class="text-[var(--accent)]">{SITE.author.name}。</span></h1>
+        <p class="mt-8 max-w-2xl text-lg leading-8 text-[var(--muted)]">我在这里记录设计、工程与数字生活，以及那些值得被慢慢理解的事。</p>
+      </div>
+    </header>
+
+    <div class="grid gap-10 py-14 md:grid-cols-[.6fr_1.4fr]">
+      <p class="eyebrow">About this site</p>
+      <div class="max-w-2xl space-y-6 text-lg leading-9">
+        <p><strong>{SITE.name}</strong> 是一个内容优先的个人博客。文章以 Markdown 或 MDX 保存，内容与网站实现分离，便于长期迁移和维护。</p>
+        <p>本站尽量减少不必要的脚本和注意力干扰：页面保持快速，交互保持可预期，阅读本身始终是最重要的部分。</p>
+        <p class="text-[var(--muted)]">如果你希望持续关注更新，可以订阅 <a class="text-[var(--accent)] underline underline-offset-4" href="/rss.xml">RSS</a>。</p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
