@@ -1,0 +1,9 @@
+---
+interface Props { title?: string }
+const { title = "旁注" } = Astro.props;
+---
+
+<aside class="my-8 rounded-2xl border border-[var(--line)] bg-[var(--panel)] p-5 md:p-6">
+  <p class="mb-2 text-sm font-semibold text-[var(--accent)]">{title}</p>
+  <div class="text-[.98rem] leading-7 text-[var(--muted)]"><slot /></div>
+</aside>

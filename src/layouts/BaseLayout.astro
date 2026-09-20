@@ -1,0 +1,59 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "边界笔记",
+  description = "关于设计、工程与数字生活的独立刊物。",
+} = Astro.props;
+
+const pageTitle = title === "边界笔记" ? title : `${title} · 边界笔记`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b0d0c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    </script>
+  </head>
+  <body>
+    <header class="shell flex h-20 items-center justify-between border-b rule">
+      <a href="/" class="flex items-center gap-3 font-semibold tracking-tight" aria-label="边界笔记首页">
+        <span class="grid size-7 place-items-center rounded-full bg-[var(--accent)] text-xs font-black text-[var(--accent-ink)]">界</span>
+        边界笔记
+      </a>
+      <nav class="flex items-center gap-5 text-sm text-[var(--muted)]" aria-label="主导航">
+        <a class="transition-colors hover:text-[var(--ink)]" href="/#articles">文章</a>
+        <a class="hidden transition-colors hover:text-[var(--ink)] sm:inline" href="/#about">关于</a>
+        <button id="theme-toggle" class="grid size-9 cursor-pointer place-items-center rounded-full border rule text-base transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]" type="button" aria-label="切换明暗主题">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="shell mt-24 flex flex-col gap-3 border-t rule py-8 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between">
+      <p>© 2026 边界笔记</p>
+      <p>Astro · Tailwind CSS · MDX</p>
+    </footer>
+  </body>
+  <script>
+    const button = document.querySelector<HTMLButtonElement>("#theme-toggle");
+    button?.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem("theme", next);
+    });
+  </script>
+</html>
