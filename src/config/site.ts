@@ -22,10 +22,10 @@ export type SiteConfig = typeof SITE;
  * 填入参数获取方式见 docs/architecture.md「横切能力 · 评论」。
  */
 export const COMMENTS = {
-  enabled: false,
+  enabled: true,
   /** 例如 "justin/luswen" */
-  repo: "",
-  repoId: "",
+  repo: "pcsensor/luswen",
+  repoId: "R_kgDOUlN-Wg",
   category: "Announcements",
-  categoryId: "",
+  categoryId: "DIC_kwDOUlN-Ws4DGJpT",
 };

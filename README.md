@@ -60,6 +60,7 @@ src/
 
 ## 文档
 
+- [从零学习教程](TUTORIAL.md) —— 面向新手：跑起来、写文章、读懂代码、常见任务
 - [架构与工程约束](docs/architecture.md) —— 分层规则、横切能力、质量门禁、决策记录
 - [内容模型与写作规范](docs/content-model.md) —— frontmatter、URL、发布检查
 - [贡献指南](CONTRIBUTING.md) —— 开发流程与提交前检查
