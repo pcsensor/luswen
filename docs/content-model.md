@@ -16,7 +16,7 @@ category: 工程
 tags:
   - Astro
   - 前端工程
-readingTime: 6 分钟阅读
+readingTime: 6 分钟阅读    # 可选；省略时按正文自动估算
 featured: false            # 可选，默认 false
 draft: false               # 可选，默认 false
 ---
@@ -30,8 +30,10 @@ draft: false               # 可选，默认 false
 - 内容发生实质变化时填写 `updated`；仅修正错别字不必更新。
 - 每篇文章至少有一个 `tag`。
 - `category` 是宽分类，`tags` 是具体主题。
+- `readingTime` 通常省略：构建时按正文自动估算（中文 350 字/分钟，英文 220 词/分钟，至少 1 分钟）；只有需要人工校准时才填写覆盖值。
 - 同一时间只保留少量精选文章；当前首页优先展示最新的 `featured: true` 文章。
-- `draft: true` 的文章不会进入任何公开输出。
+- `draft: true` 的文章不会进入任何公开输出；写作期间保持草稿，定稿发布时再改为 `false`。
+- 正文全文会进入 `/search.json` 搜索索引（草稿除外），无需在 frontmatter 里另填关键词。
 
 ## 文件名与 URL
 
@@ -68,6 +70,7 @@ designing-for-attention.mdx
 ```bash
 npm run check
 npm run build
+npm run preview
 ```
 
-然后检查文章标题层级、代码块横向滚动、移动端宽度、标签链接、上一篇/下一篇以及 RSS 输出。
+然后逐项确认：文章标题层级、代码块横向滚动、移动端宽度、标签链接、上一篇/下一篇、站内搜索能命中该文章、RSS 与 Sitemap 已收录；文章数超过每页上限时落页符合预期。

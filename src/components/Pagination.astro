@@ -1,0 +1,30 @@
+---
+import { getPagePath } from "@/lib/posts";
+
+interface Props {
+  page: number;
+  totalPages: number;
+}
+
+const { page, totalPages } = Astro.props;
+const linkClass =
+  "inline-flex items-center gap-2 border-b border-[var(--ink)] pb-1 text-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]";
+---
+
+{totalPages > 1 && (
+  <nav class="mt-12 flex items-center justify-between gap-4 border-t rule pt-6" aria-label="分页">
+    {page > 1 ? (
+      <a class={linkClass} href={getPagePath(page - 1)} rel="prev">← 上一页</a>
+    ) : (
+      <span aria-hidden="true"></span>
+    )}
+    <span class="font-mono text-xs tracking-widest text-[var(--muted)]">
+      第 {page} / {totalPages} 页
+    </span>
+    {page < totalPages ? (
+      <a class={linkClass} href={getPagePath(page + 1)} rel="next">下一页 →</a>
+    ) : (
+      <span aria-hidden="true"></span>
+    )}
+  </nav>
+)}

@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "check:architecture": "node scripts/check-architecture.mjs",
     "check:astro": "astro check",
-    "check": "npm run check:architecture && npm run check:astro",
+    "check": "npm run check:architecture && npm run check:astro && npm run test",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build": "npm run check && astro build",
     "preview": "astro preview"
   },
@@ -18,7 +20,12 @@
     "@astrojs/mdx": "^8.0.1",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.3",
+    "fuse.js": "^7.5.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "vitest": "^5.0.1"
   }
 }

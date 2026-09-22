@@ -10,8 +10,8 @@ const isActive = (href: string) =>
 <header class="sticky top-0 z-50 border-b rule bg-[color-mix(in_srgb,var(--page)_88%,transparent)] backdrop-blur-xl">
   <div class="shell flex h-18 items-center justify-between">
     <a href="/" class="flex items-center gap-3 font-semibold tracking-tight" aria-label={`${SITE.name} 首页`}>
-      <span class="grid size-7 place-items-center rounded-full border border-[var(--accent)] font-mono text-xs font-bold text-[var(--accent)]">LW</span>
-      <span>{SITE.name} <span class="ml-1 font-mono text-xs font-normal tracking-widest text-[var(--muted)]">/ JUSTIN</span></span>
+      <span class="grid size-7 place-items-center rounded-full border border-[var(--accent)] font-mono text-xs font-bold text-[var(--accent)]">{SITE.initials}</span>
+      <span>{SITE.name} <span class="ml-1 font-mono text-xs font-normal tracking-widest text-[var(--muted)]">/ {SITE.author.name.toUpperCase()}</span></span>
     </a>
 
     <div class="flex items-center gap-5">

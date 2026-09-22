@@ -1,11 +1,12 @@
 ---
+import { SITE } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { collectTags, getPublishedPosts } from "@/lib/posts";
 
 const tags = collectTags(await getPublishedPosts());
 ---
 
-<BaseLayout title="标签" description="按主题浏览 luswen 的文章。" canonicalPath="/tags/">
+<BaseLayout title="标签" description={`按主题浏览 ${SITE.name} 的文章。`} canonicalPath="/tags/">
   <section class="shell py-16 md:py-24">
     <header class="mb-14 border-b rule pb-10">
       <p class="eyebrow mb-4">Topics / 标签</p>

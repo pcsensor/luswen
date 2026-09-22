@@ -1,5 +1,6 @@
 ---
 import PostListItem from "@/components/PostListItem.astro";
+import { SITE } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPublishedPosts } from "@/lib/posts";
 
@@ -13,7 +14,7 @@ const years = posts.reduce((groups, post) => {
 }, new Map<number, typeof posts>());
 ---
 
-<BaseLayout title="文章归档" description="luswen 的全部文章，按年份归档。" canonicalPath="/archive/">
+<BaseLayout title="文章归档" description={`${SITE.name} 的全部文章，按年份归档。`} canonicalPath="/archive/">
   <section class="shell py-16 md:py-24">
     <header class="mb-14 border-b rule pb-10">
       <p class="eyebrow mb-4">Archive / 归档</p>

@@ -1,8 +1,10 @@
 ---
+import Comments from "@/components/Comments.astro";
 import PostNavigation from "@/components/PostNavigation.astro";
+import { SITE } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import type { Post } from "@/lib/posts";
-import { formatLongDate, getTagPath } from "@/lib/posts";
+import { formatLongDate, getReadingTime, getTagPath } from "@/lib/posts";
 
 interface Props {
   post: Post;
@@ -32,8 +34,8 @@ const { post, newer, older } = Astro.props;
         <p class="mt-8 max-w-2xl text-lg leading-8 text-[var(--muted)]">{post.data.description}</p>
         <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t rule pt-5 font-mono text-xs text-[var(--muted)]">
           <time datetime={post.data.published.toISOString()}>{formatLongDate(post.data.published)}</time>
-          <span>{post.data.readingTime}</span>
-          <span>作者：Justin</span>
+          <span>{getReadingTime(post)}</span>
+          <span>作者：{SITE.author.name}</span>
         </div>
         <div class="mt-5 flex flex-wrap gap-2">
           {post.data.tags.map((tag) => (
@@ -47,4 +49,5 @@ const { post, newer, older } = Astro.props;
     </div>
     <PostNavigation newer={newer} older={older} />
   </article>
+  <Comments />
 </BaseLayout>

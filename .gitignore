@@ -1,5 +1,29 @@
-node_modules
-dist
-.astro
-.sites-runtime
+# 依赖与构建产物
+node_modules/
+dist/
+.astro/
+
+# 本地环境与密钥（架构约束：源码中不得保存任何凭据）
+.env
+.env.*
+!.env.example
+
+# 日志
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 测试覆盖率
+coverage/
+
+# 编辑器与操作系统
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# 本地工具与运行时状态
+.sites-runtime
+.freebuff/

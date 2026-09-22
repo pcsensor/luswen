@@ -1,6 +1,6 @@
 ---
 import type { Post } from "@/lib/posts";
-import { formatCompactDate, getPostPath } from "@/lib/posts";
+import { formatCompactDate, getPostPath, getReadingTime } from "@/lib/posts";
 
 interface Props {
   post: Post;
@@ -31,7 +31,7 @@ const { post, index = 0, featured = false } = Astro.props;
     </div>
     {featured && (
       <p class="mt-8 border-t rule pt-4 font-mono text-xs tracking-[.1em] text-[var(--muted)] uppercase md:mt-0">
-        Featured note · {post.data.readingTime}
+        Featured note · {getReadingTime(post)}
       </p>
     )}
   </div>

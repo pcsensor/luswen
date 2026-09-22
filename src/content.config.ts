@@ -11,7 +11,7 @@ const posts = defineCollection({
     updated: z.coerce.date().optional(),
     category: z.string(),
     tags: z.array(z.string()).min(1),
-    readingTime: z.string(),
+    readingTime: z.string().optional(),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),

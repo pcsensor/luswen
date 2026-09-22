@@ -1,0 +1,75 @@
+<div>
+  <label class="eyebrow mb-3 block" for="search-input">Search / 搜索</label>
+  <input
+    id="search-input"
+    class="w-full border rule bg-[var(--paper)] px-5 py-4 text-lg transition-colors focus:border-[var(--accent)]"
+    type="search"
+    placeholder="输入标题、标签或关键词…"
+    autocomplete="off"
+  />
+  <p id="search-status" class="mt-4 min-h-6 text-sm text-[var(--muted)]" role="status" aria-live="polite"></p>
+  <ul id="search-results" class="mt-2 border-b rule"></ul>
+</div>
+
+<script>
+  import { createSearch } from "@/lib/search";
+  import type { SearchDoc } from "@/lib/search";
+
+  const input = document.querySelector<HTMLInputElement>("#search-input");
+  const status = document.querySelector<HTMLElement>("#search-status");
+  const results = document.querySelector<HTMLElement>("#search-results");
+
+  if (input && status && results) {
+    let searchPromise: Promise<ReturnType<typeof createSearch>> | undefined;
+    const load = () => {
+      searchPromise ??= fetch("/search.json")
+        .then((response) => response.json())
+        .then((docs: SearchDoc[]) => createSearch(docs));
+      return searchPromise;
+    };
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const run = async () => {
+      const query = input.value.trim();
+      results.innerHTML = "";
+      if (!query) {
+        status.textContent = "";
+        return;
+      }
+      status.textContent = "搜索中…";
+      try {
+        const search = await load();
+        const matches = search.search(query).slice(0, 20);
+        for (const { item } of matches) {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = item.path;
+          link.className = "group grid gap-1 border-t rule py-5";
+          link.innerHTML = `
+            <span class="text-xl font-medium transition-colors group-hover:text-[var(--accent)]"></span>
+            <span class="font-mono text-xs text-[var(--muted)]"></span>
+            <span class="text-sm leading-6 text-[var(--muted)]"></span>`;
+          const [title, meta, desc] = link.querySelectorAll("span");
+          title.textContent = item.title;
+          meta.textContent = `${item.published} · ${item.category} · ${item.readingTime}`;
+          desc.textContent = item.description;
+          li.append(link);
+          results.append(li);
+        }
+        status.textContent =
+          matches.length > 0 ? `找到 ${matches.length} 篇文章。` : "没有匹配的文章。";
+      } catch {
+        status.textContent = "搜索索引加载失败，请稍后重试。";
+        searchPromise = undefined;
+      }
+    };
+
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(run, 160);
+    });
+    // 首次聚焦时预取索引，减少首次搜索等待。
+    input.addEventListener("focus", () => void load(), { once: true });
+  }
+</script>

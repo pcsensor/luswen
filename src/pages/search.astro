@@ -1,0 +1,16 @@
+---
+import SearchBox from "@/components/SearchBox.astro";
+import { SITE } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="搜索" description={`搜索 ${SITE.name} 的全部文章。`} canonicalPath="/search/">
+  <section class="shell py-16 md:py-24">
+    <header class="mb-12 border-b rule pb-10">
+      <p class="eyebrow mb-4">Search / 搜索</p>
+      <h1 class="text-[clamp(3rem,7vw,6rem)] font-medium leading-none tracking-[-.055em]">站内搜索</h1>
+      <p class="mt-6 text-[var(--muted)]">按标题、标签与正文查找文章。</p>
+    </header>
+    <SearchBox />
+  </section>
+</BaseLayout>

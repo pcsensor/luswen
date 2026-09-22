@@ -1,0 +1,59 @@
+---
+import { COMMENTS } from "@/config/site";
+---
+
+{COMMENTS.enabled && (
+  <section id="comments" class="shell mt-16 border-t rule pt-10" aria-label="评论区">
+    <p class="eyebrow mb-6">Discussion / 讨论</p>
+    <div class="giscus"></div>
+  </section>
+  <script is:inline define:vars={{
+    repo: COMMENTS.repo,
+    repoId: COMMENTS.repoId,
+    category: COMMENTS.category,
+    categoryId: COMMENTS.categoryId,
+  }}>
+    const currentTheme = () =>
+      document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+
+    const container = document.querySelector("#comments .giscus");
+    if (container) {
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      Object.assign(script.dataset, {
+        repo,
+        repoId,
+        category,
+        categoryId,
+        mapping: "pathname",
+        strict: "1",
+        reactionsEnabled: "1",
+        emitMetadata: "0",
+        inputPosition: "bottom",
+        theme: currentTheme(),
+        lang: "zh-CN",
+      });
+      container.append(script);
+
+      const syncTheme = () => {
+        const frame = document.querySelector("#comments iframe.giscus-frame");
+        frame?.contentWindow?.postMessage(
+          { giscus: { setConfig: { theme: currentTheme() } } },
+          "https://giscus.app",
+        );
+      };
+
+      window.addEventListener("message", (event) => {
+        if (event.origin !== "https://giscus.app") return;
+        if (event.data?.giscus?.loaded) syncTheme();
+      });
+
+      new MutationObserver(syncTheme).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+    }
+  </script>
+)}

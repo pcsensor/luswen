@@ -1,0 +1,41 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import PostCard from "@/components/PostCard.astro";
+import { orderFeaturedFirst, paginate, POSTS_PER_PAGE } from "@/lib/posts";
+import type { Post } from "@/lib/posts";
+
+interface Props {
+  posts: Post[];
+  /** 从 1 开始；第 1 页为首页。 */
+  page?: number;
+  /** 首页该区域无上级主标题时用 h2，独立页用 h1。 */
+  headingLevel?: "h1" | "h2";
+}
+
+const { posts, page = 1, headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+const pagination = paginate(orderFeaturedFirst(posts), page);
+const offset = (pagination.page - 1) * POSTS_PER_PAGE;
+---
+
+<section id="articles" class="shell scroll-mt-24 py-16 md:py-24">
+  <div class="mb-12 flex items-end justify-between gap-6 border-b rule pb-6">
+    <div>
+      <p class="eyebrow mb-3">Archive / 归档</p>
+      <Heading class="text-3xl font-medium tracking-tight md:text-4xl">最近文章</Heading>
+    </div>
+    <span class="font-mono text-xs tracking-wider text-[var(--muted)]">{String(pagination.total).padStart(2, "0")} entries</span>
+  </div>
+
+  <div class="grid gap-px overflow-hidden border rule bg-[var(--line)] md:grid-cols-2">
+    {pagination.items.map((post, index) => (
+      <PostCard
+        post={post}
+        index={offset + index}
+        featured={pagination.page === 1 && index === 0}
+      />
+    ))}
+  </div>
+
+  <Pagination page={pagination.page} totalPages={pagination.totalPages} />
+</section>

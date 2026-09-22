@@ -1,5 +1,6 @@
 ---
 import PostListItem from "@/components/PostListItem.astro";
+import { SITE } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { collectTags, getPublishedPosts } from "@/lib/posts";
 
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout title={`#${tag}`} description={`luswen 中标记为“${tag}”的文章。`} canonicalPath={`/tags/${encodeURIComponent(tag)}/`}>
+<BaseLayout title={`#${tag}`} description={`${SITE.name} 中标记为“${tag}”的文章。`} canonicalPath={`/tags/${encodeURIComponent(tag)}/`}>
   <section class="shell py-16 md:py-24">
     <a class="mb-10 inline-flex text-sm text-[var(--muted)] hover:text-[var(--accent)]" href="/tags/">← 全部标签</a>
     <header class="mb-12 border-b rule pb-10">

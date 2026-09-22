@@ -1,14 +1,10 @@
 ---
-import PostCard from "@/components/PostCard.astro";
+import RecentArticles from "@/components/RecentArticles.astro";
 import { SITE } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPublishedPosts } from "@/lib/posts";
 
 const posts = await getPublishedPosts();
-const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
-const orderedPosts = featuredPost
-  ? [featuredPost, ...posts.filter((post) => post.id !== featuredPost.id)]
-  : [];
 ---
 
 <BaseLayout>
@@ -34,19 +30,7 @@ const orderedPosts = featuredPost
     </figure>
   </section>
 
-  <section id="articles" class="shell scroll-mt-24 py-16 md:py-24">
-    <div class="mb-12 flex items-end justify-between gap-6 border-b rule pb-6">
-      <div>
-        <p class="eyebrow mb-3">Archive / 归档</p>
-        <h2 class="text-3xl font-medium tracking-tight md:text-4xl">最近文章</h2>
-      </div>
-      <span class="font-mono text-xs tracking-wider text-[var(--muted)]">{String(posts.length).padStart(2, "0")} entries</span>
-    </div>
-
-    <div class="grid gap-px overflow-hidden border rule bg-[var(--line)] md:grid-cols-2">
-      {orderedPosts.map((post, index) => <PostCard post={post} index={index} featured={index === 0} />)}
-    </div>
-  </section>
+  <RecentArticles posts={posts} />
 
   <section id="about" class="shell scroll-mt-24 border-t rule py-16 md:py-24">
     <div class="grid gap-12 md:grid-cols-[.7fr_1.3fr]">
